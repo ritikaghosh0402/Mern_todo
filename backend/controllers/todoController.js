@@ -21,3 +21,18 @@ exports.toggleTodo = async (req, res) => {
   await todo.save();
   res.json(todo);
 };
+
+exports.updateTodoTitle = async (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  try {
+    const todo = await Todo.findByPk(id);
+    if (!todo) return res.status(404).json({ error: 'Todo not found' });
+    todo.title = title;
+    await todo.save();
+    res.json(todo);
+  } catch (err) {
+    res.status(500).json({ error: 'Something went wrong' });
+  }
+};
+
